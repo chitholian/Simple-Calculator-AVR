@@ -18,29 +18,20 @@ unsigned char keys[4][4] = {
 
 void init_keyboard() {
     DDRB |= 0x0F; // PB 0-3 output for rows.
-    DDRC &= ~(0x0F); // PC 0-3 input for columns.
+    DDRC &= 0xF0; // PC 0-3 input for columns.
 }
 
 unsigned char scan_key() {
     while (1) {
-        int row = -1, col = -1;
-        PORTB &= 0xF0;
         PORTC |= 0x0F;
-        while ((PINC & 0x0F) == 0x0F) _delay_ms(20);
-        for (int i = 0; i < 4; i++) {
-            if (((0x01 << i) & (PINC & 0x0F)) == 0x00) {
-                col = i;
-                break;
-            }
-        }
-        for (int i = 0; i < 4; i++) {
+        for(int i = 0;i<4;i++){
             PORTB = ~(0x01 << i);
-            if ((PINC & 0x0F) != 0x0F) {
-                row = i;
-                break;
+            for(int j = 0;j < 4;j++){
+                if(bit_is_clear(PINC, j)){
+                    while(bit_is_clear(PINC, j)) _delay_ms(50);
+                    return keys[i][j];
+                }
             }
         }
-        _delay_ms(250);
-        return (row != -1 && col != -1) ? keys[row][col] : 'U';
     }
 }
