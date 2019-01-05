@@ -35,7 +35,7 @@ void send_data(unsigned char data){
 
 void trigger(){
     PORTC |= 0x20; // Set PC5.
-    _delay_ms(20); // Delay 20 milliseconds.
+    _delay_ms(15); // Delay 20 milliseconds.
     PORTC &=~(0x20); // Reset PC5.
 }
 

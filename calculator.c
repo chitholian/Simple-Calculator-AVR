@@ -5,6 +5,7 @@
 \**************************/
 
 #include <stdlib.h>
+#include <util/delay.h>
 #include "calculator.h"
 #include "keyboard.h"
 #include "lcd.h"
@@ -21,6 +22,7 @@ void decide(unsigned char);
 void send_digit(unsigned char);
 
 void init_calculator() {
+    _delay_ms(500);
     init_display();
     init_keyboard();
 
